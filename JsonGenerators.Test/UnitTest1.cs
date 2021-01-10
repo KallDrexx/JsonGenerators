@@ -1,4 +1,3 @@
-using System;
 using Shouldly;
 using Xunit;
 
@@ -9,7 +8,7 @@ namespace JsonGenerators.Test
         [Fact]
         public void Test1()
         {
-            const string json = @"{""StringValue"":""abcd efg"",""IntValue"":23,""DoubleValue"":3.45,""BoolValue"":true,""NullableIntValue"":null,""IntArray"":null,""DictionaryValue"":null}";
+            const string json = @"{""StringValue"":""abcd efg"",""IntValue"":23,""DoubleValue"":3.45,""BoolValue"":true}";
 
             var result = TestClassDeserializer.Deserialize(json);
             result.ShouldNotBeNull();

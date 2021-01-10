@@ -29,12 +29,12 @@ namespace JsonGenerators
 
         private static int? ParseProperties(TestClass result, ReadOnlySpan<char> json, JsonSection section)
         {
-            var propertyNameSlice = json.Slice(section.StartIndex + 1, section.EndIndex - section.StartIndex - 2);
+            var propertyNameSlice = json.Slice(section.StartIndex + 1, section.EndIndex - section.StartIndex - 1);
             if (propertyNameSlice.Equals(nameof(TestClass.StringValue), StringComparison.OrdinalIgnoreCase))
             {
                 var nextStringSection = JsonParseUtils.FindNextString(json, section.NextCharIndex.Value + 1);
                 var valueSlice = json.Slice(nextStringSection.StartIndex,
-                    nextStringSection.EndIndex - nextStringSection.StartIndex - 1);
+                    nextStringSection.EndIndex - nextStringSection.StartIndex);
 
                 result.StringValue = valueSlice.Equals("null", StringComparison.Ordinal) 
                     ? null 
@@ -47,7 +47,7 @@ namespace JsonGenerators
             {
                 var numberSection = JsonParseUtils.FindNextNumber(json, section.NextCharIndex.Value + 1);
                 var valueSlice = json.Slice(numberSection.StartIndex,
-                    numberSection.EndIndex - numberSection.StartIndex - 1);
+                    numberSection.EndIndex - numberSection.StartIndex);
 
                 result.IntValue = Convert.ToInt32(valueSlice.ToString());
 
@@ -57,7 +57,7 @@ namespace JsonGenerators
             if (propertyNameSlice.Equals(nameof(TestClass.BoolValue), StringComparison.OrdinalIgnoreCase))
             {
                 var boolSection = JsonParseUtils.FindNextBool(json, section.NextCharIndex.Value + 1);
-                var valueSlice = json.Slice(boolSection.StartIndex, boolSection.EndIndex - boolSection.StartIndex - 1);
+                var valueSlice = json.Slice(boolSection.StartIndex, boolSection.EndIndex - boolSection.StartIndex);
 
                 if (valueSlice.Equals("true", StringComparison.Ordinal))
                 {
@@ -79,7 +79,7 @@ namespace JsonGenerators
             {
                 var numberSection = JsonParseUtils.FindNextNumber(json, section.NextCharIndex.Value + 1);
                 var valueSlice = json.Slice(numberSection.StartIndex,
-                    numberSection.EndIndex - numberSection.StartIndex - 1);
+                    numberSection.EndIndex - numberSection.StartIndex);
 
                 if (valueSlice.Equals("null", StringComparison.Ordinal))
                 {
@@ -97,7 +97,7 @@ namespace JsonGenerators
             {
                 var numberSection = JsonParseUtils.FindNextNumber(json, section.NextCharIndex.Value + 1);
                 var valueSlice = json.Slice(numberSection.StartIndex,
-                    numberSection.EndIndex - numberSection.StartIndex - 1);
+                    numberSection.EndIndex - numberSection.StartIndex);
 
                 result.DoubleValue = Convert.ToDouble(valueSlice.ToString());
 

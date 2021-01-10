@@ -33,8 +33,8 @@ namespace JsonGenerators
                                   json[currentIndex + 2] == 'l' &&
                                   json[currentIndex + 3] == 'l':
                         firstCharAt = currentIndex;
-                        lastCharAt = currentIndex += 3;
-                        currentIndex += 3;
+                        lastCharAt = currentIndex + 4;
+                        currentIndex = lastCharAt.Value;
                         break;
                     
                     case var _ when firstCharAt == null:
@@ -89,7 +89,7 @@ namespace JsonGenerators
                                 json[currentIndex + 2] == 'l' &&
                                 json[currentIndex + 3] == 'l':
                         firstCharAt = currentIndex;
-                        lastCharAt = currentIndex + 3;
+                        lastCharAt = currentIndex + 4;
                         currentIndex = lastCharAt.Value;
                         break;
                     
@@ -101,7 +101,7 @@ namespace JsonGenerators
                         break;
                     
                     case var ch when firstCharAt != null && !char.IsDigit(ch):
-                        lastCharAt = currentIndex - 1;
+                        lastCharAt = currentIndex;
                         break;
                     
                     default:
@@ -142,7 +142,7 @@ namespace JsonGenerators
                                   json[currentIndex + 2] == 'l' &&
                                   json[currentIndex + 3] == 'l':
                         firstCharAt = currentIndex;
-                        lastCharAt = currentIndex + 3;
+                        lastCharAt = currentIndex + 4;
                         currentIndex = lastCharAt.Value;
                         break;
                     
@@ -151,7 +151,7 @@ namespace JsonGenerators
                                   json[currentIndex + 2] == 'u' &&
                                   json[currentIndex + 3] == 'e':
                         firstCharAt = currentIndex;
-                        lastCharAt = currentIndex + 3;
+                        lastCharAt = currentIndex + 4;
                         currentIndex = lastCharAt.Value;
                         break;
                     
@@ -161,7 +161,7 @@ namespace JsonGenerators
                                   json[currentIndex + 3] == 's' &&
                                   json[currentIndex + 4] == 'e':
                         firstCharAt = currentIndex;
-                        lastCharAt = currentIndex + 4;
+                        lastCharAt = currentIndex + 5;
                         currentIndex = lastCharAt.Value;
                         break;
                     
@@ -213,7 +213,7 @@ namespace JsonGenerators
                     var followingIndex = JsonParseUtils.GetNextCharIndex(json, 4);
                     if (followingIndex != null)
                     {
-                        throw new InvalidOperationException($"Unexpected character at index {followingIndex.Value}");
+                        throw new InvalidOperationException($"Unexpected character '{json[followingIndex.Value]}' at index {followingIndex.Value}");
                     }
 
                     // explicit null
@@ -224,8 +224,8 @@ namespace JsonGenerators
                     break;
                 
                 default:
-                    throw new InvalidOperationException($"Unexpected character at index {firstCharAt.Value}");
-                }
+                    throw new InvalidOperationException($"Unexpected character '{json[firstCharAt.Value]}' at index {firstCharAt.Value}");
+            }
 
             // We are in an object declaration, as expected.  Start parsing the properties one by one
             var nextCharAt = JsonParseUtils.GetNextCharIndex(json, 1);
@@ -234,16 +234,16 @@ namespace JsonGenerators
                 switch (json[nextCharAt.Value])
                 {
                     case '}':
-                        nextCharAt = JsonParseUtils.GetNextCharIndex(json, nextCharAt.Value + 1);
+                        nextCharAt = GetNextCharIndex(json, nextCharAt.Value + 1);
                         if (nextCharAt != null)
                         {
-                            throw new InvalidOperationException($"Unexpected character at index {nextCharAt.Value}");
+                            throw new InvalidOperationException($"Unexpected character '{json[nextCharAt.Value]}' at index {nextCharAt.Value}");
                         }
                     
                         return result;
                     
                     case '"':
-                        var section = FindNextString(json, startIndex);
+                        var section = FindNextString(json, nextCharAt.Value);
 
                         // Should be followed by a colon
                         if (section.NextCharIndex == null)
@@ -261,8 +261,12 @@ namespace JsonGenerators
                         nextCharAt = propertySetMethod(result, json, section);
                         break;
                     
+                    case ',':
+                        nextCharAt = GetNextCharIndex(json, nextCharAt.Value + 1);
+                        break;
+                    
                     default:
-                        throw new InvalidOperationException($"Unexpected character at index {nextCharAt.Value}");
+                        throw new InvalidOperationException($"Unexpected character '{json[nextCharAt.Value]}' at index {nextCharAt.Value}");
                 }
             }
 
