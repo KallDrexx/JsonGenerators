@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\JsonGenerators\JsonGenerators.csproj" />
+      <ProjectReference Include="..\JsonGenerators\JsonGenerators.csproj" OutputItemType="Analyzer" />
     </ItemGroup>
 
 </Project>
