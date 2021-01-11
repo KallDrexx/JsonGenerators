@@ -13,6 +13,7 @@ namespace JsonGenerators.Benchmarks
         public bool IsCorrect { get; set; }
     }
     
+    [MemoryDiagnoser]
     public class DeserializationBenchmark
     {
         private const string Json = @"{""SomeOtherContent"":""abcd efg"",""NumericValue"":23,""DecimalValue"":3.45,""IsCorrect"":true, ""MaybeValue"": 42}";
