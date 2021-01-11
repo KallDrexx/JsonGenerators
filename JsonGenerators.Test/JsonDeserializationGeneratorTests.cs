@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using JsonGenerators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Shouldly;
 using Xunit;
 
-namespace JsonGeneratorsTest
+namespace JsonGenerators.Test
 {
     [GenerateJsonDeserializer]
     public class Abcdefg

@@ -95,7 +95,7 @@ namespace JsonGenerators
                 }
                 else if (node is NamespaceDeclarationSyntax namespaceNode)
                 {
-                    name = ((INamespaceSymbol) model.GetDeclaredSymbol(node)).Name;
+                    name = ((INamespaceSymbol) model.GetDeclaredSymbol(node)).ToString();
                     nsFound = true;
                 }
 
