@@ -111,17 +111,12 @@ namespace JsonGenerators
                 currentIndex++;
             }
 
-            if (firstCharAt == null)
+            if (firstCharAt == null || lastCharAt == null)
             {
                 throw new InvalidOperationException("No numeric value found");
             }
-
-            if (lastCharAt == null)
-            {
-                lastCharAt = json.Length - 1;
-            }
             
-            var nextCharAt = GetNextCharIndex(json, currentIndex);
+            var nextCharAt = GetNextCharIndex(json, lastCharAt.Value);
             return new JsonSection(firstCharAt.Value, lastCharAt.Value, nextCharAt);
         }
 

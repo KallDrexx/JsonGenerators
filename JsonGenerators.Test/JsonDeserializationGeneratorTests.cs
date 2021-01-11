@@ -11,11 +11,11 @@ namespace JsonGenerators.Test
     [GenerateJsonDeserializer]
     public class Abcdefg
     {
-        public string StringValue { get; set; }
-        public int IntValue { get; set; }
-        public double DoubleValue { get; set; }
-        public bool BoolValue { get; set; }
-        public int? NullableIntValue { get; set; }
+        public int NumericValue { get; set; }
+        public string SomeOtherContent { get; set; }
+        public double DecimalValue { get; set; }
+        public bool IsCorrect { get; set; }
+        public int? MaybeValue { get; set; }
     }
     
     public class JsonDeserializationGeneratorTests
@@ -23,19 +23,19 @@ namespace JsonGenerators.Test
         [Fact]
         public void Can_Deserialize_With_Generated_Deserializer()
         {
-            const string json = @"{""StringValue"":""abcd efg"",""IntValue"":23,""DoubleValue"":3.45,""BoolValue"":true}";
+            const string json = @"{""SomeOtherContent"":""abcd efg"",""NumericValue"":23,""DecimalValue"":3.45,""IsCorrect"":true, ""MaybeValue"": 42}";
 
             var result = AbcdefgDeserializer.Deserialize(json);
             result.ShouldNotBeNull();
-            result.StringValue.ShouldBe("abcd efg");
-            result.IntValue.ShouldBe(23);
-            result.BoolValue.ShouldBeTrue();
-            result.DoubleValue.ShouldBe(3.45);
-            result.NullableIntValue.ShouldBeNull();
+            result.SomeOtherContent.ShouldBe("abcd efg");
+            result.NumericValue.ShouldBe(23);
+            result.IsCorrect.ShouldBeTrue();
+            result.DecimalValue.ShouldBe(3.45);
+            result.MaybeValue.ShouldBe(42);
         }
         
         [Fact]
-        public void Test()
+        public void Can_Run_Code_Through_Generator_Without_Roslyn_Diagnostic_Errors()
         {
             var inputCompilation = CreateCompilation(@"
 using JsonGenerators;
